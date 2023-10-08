@@ -26,6 +26,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "permissions": ["LOCATION", "LOCATION_BACKGROUND"]
+    "permissions": ["LOCATION", "LOCATION_BACKGROUND" , "foregroundService"]
   }
 }
