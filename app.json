@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "geo_location",
+    "slug": "geo_location",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.asifamin.geo_location"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "permissions": [
+      "LOCATION",
+      "LOCATION_BACKGROUND",
+      "foregroundService"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "66d6298e-0aad-4849-b19a-f7b9d58fccc4"
+      }
+    }
+  }
+}
