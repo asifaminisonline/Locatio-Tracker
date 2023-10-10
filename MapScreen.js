@@ -18,7 +18,7 @@ export default function MapScreen({ navigation }) {
         const locationSubscriber = await Location.watchPositionAsync(
           {
             accuracy: Location.Accuracy.High,
-            timeInterval: 15000, // Update every 2 seconds (adjust as needed)
+            timeInterval: 1000,
           },
           async (newLocation) => {
             setLocation(newLocation.coords);
@@ -65,7 +65,7 @@ export default function MapScreen({ navigation }) {
   useEffect(() => {
     const intervalId = setInterval(() => {
       sendLocationData();
-    }, 15000); // 30 seconds
+    }, 1000);
 
     // Clean up the interval when the component unmounts
     return () => clearInterval(intervalId);
