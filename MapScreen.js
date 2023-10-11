@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import axios from "axios";
 
 export default function MapScreen({ navigation }) {
   const [locations, setLocations] = useState([]);
+  const mapRef = useRef(null);
   const backendUrl = "https://location-tracker-rtl.onrender.com"; // Replace with your actual backend URL
 
   useEffect(() => {
@@ -30,17 +31,25 @@ export default function MapScreen({ navigation }) {
     return () => clearInterval(intervalId);
   }, []);
 
+  useEffect(() => {
+    if (mapRef.current && locations.length > 0) {
+      mapRef.current.animateCamera({
+        center: {
+          latitude: locations[locations.length - 1].latitude,
+          longitude: locations[locations.length - 1].longitude,
+        },
+      });
+    }
+  }, [locations]);
+
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
         style={styles.map}
-        region={{
-          latitude:
-            locations.length > 0 ? locations[locations.length - 1].latitude : 0, // Use the latitude from the first location
-          longitude:
-            locations.length > 0
-              ? locations[locations.length - 1].longitude
-              : 0, // Use the longitude from the first location
+        initialRegion={{
+          latitude: 0, // Use default values
+          longitude: 0, // Use default values
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
