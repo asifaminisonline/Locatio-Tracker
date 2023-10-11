@@ -25,14 +25,14 @@
     "react-native-background-timer": "^2.4.1",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "~2.12.0",
-    "react-native-maps": "^1.7.1",
+    "react-native-maps": "1.7.1",
     "react-native-reanimated": "~3.3.0",
     "react-native-screens": "~3.22.0",
     "react-native-web": "~0.19.6",
     "react-native-webrtc": "^111.0.3",
     "expo-updates": "~0.18.16"
   },
-  "proxy":"8000",
+  "proxy": "8000",
   "devDependencies": {
     "@babel/core": "^7.20.0"
   },
