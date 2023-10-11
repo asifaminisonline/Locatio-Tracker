@@ -1,108 +1,65 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import * as Location from "expo-location";
-import axios from "axios"; // Import Axios
+import axios from "axios";
 
 export default function MapScreen({ navigation }) {
-  const [location, setLocation] = useState(null);
-  const backendUrl = "https://location-tracker-rtl.onrender.com";
+  const [locations, setLocations] = useState([]);
+  const backendUrl = "https://location-tracker-rtl.onrender.com"; // Replace with your actual backend URL
 
   useEffect(() => {
-    // Request location permission and start watching for location updates
-    const startWatchingLocation = async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === "granted") {
-        await sendLocationData(); // Send initial location data
-
-        const locationSubscriber = await Location.watchPositionAsync(
-          {
-            accuracy: Location.Accuracy.High,
-            timeInterval: 1000,
-          },
-          async (newLocation) => {
-            setLocation(newLocation.coords);
-
-            // Send location data to the backend
-            try {
-              console.log("Sending data to backend:", newLocation.coords);
-
-              await axios.post(`${backendUrl}/locations`, newLocation.coords);
-              console.log("Location data sent successfully!");
-            } catch (error) {
-              console.error("Error sending location data:", error.message);
-            }
-          }
-        );
-
-        // Clean up the location subscriber when the component unmounts
-        return () => {
-          if (locationSubscriber) {
-            locationSubscriber.remove();
-          }
-        };
+    // Fetch location data from the API endpoint
+    const fetchLocationData = async () => {
+      try {
+        const response = await axios.get(`${backendUrl}/locations`);
+        setLocations(response.data);
+      } catch (error) {
+        console.error("Error fetching location data:", error.message);
       }
     };
 
-    startWatchingLocation();
-  }, []);
+    // Fetch location data initially and then at regular intervals
+    fetchLocationData();
 
-  const sendLocationData = async () => {
-    // Function to send location data to the backend
-    if (location) {
-      try {
-        console.log("Sending data to backend:", location);
-
-        await axios.post(`${backendUrl}/locations`, location);
-        console.log("Location data sent successfully!");
-      } catch (error) {
-        console.error("Error sending location data:", error.message);
-      }
-    }
-  };
-
-  // Set an interval to send location data to the backend every 30 seconds
-  useEffect(() => {
+    // Set an interval to fetch location data every 10 seconds
     const intervalId = setInterval(() => {
-      sendLocationData();
+      fetchLocationData();
     }, 1000);
 
     // Clean up the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, [location]);
+  }, []);
 
   return (
     <View style={styles.container}>
-      {location && (
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: location.latitude,
-            longitude: location.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
+      <MapView
+        style={styles.map}
+        region={{
+          latitude:
+            locations.length > 0 ? locations[locations.length - 1].latitude : 0, // Use the latitude from the first location
+          longitude:
+            locations.length > 0
+              ? locations[locations.length - 1].longitude
+              : 0, // Use the longitude from the first location
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      >
+        {locations.length > 0 && (
           <Marker
             coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
+              latitude: locations[locations.length - 1].latitude,
+              longitude: locations[locations.length - 1].longitude,
             }}
-            title="Your Location"
+            title="User Location"
           />
-        </MapView>
-      )}
-      {location && (
-        <Text style={styles.locationText}>
-          Latitude: {location.latitude}, Longitude: {location.longitude}
-        </Text>
-      )}
-      {location && (
-        <Button
-          title="My Details"
-          onPress={() => navigation.navigate("MyDetails")}
-        />
-      )}
+        )}
+      </MapView>
+
+      <Button
+        title="My Details"
+        onPress={() => navigation.navigate("MyDetails")}
+      />
     </View>
   );
 }
@@ -113,9 +70,5 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
-  },
-  locationText: {
-    padding: 16,
-    textAlign: "center",
   },
 });
