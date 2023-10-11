@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Button } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import axios from "axios";
@@ -41,7 +41,7 @@ export default function MapScreen({ navigation }) {
         const locationSubscriber = await Location.watchPositionAsync(
           {
             accuracy: Location.Accuracy.BestForNavigation,
-            distanceInterval: 0.5, // Update location when the user has moved 1 meter
+            distanceInterval: 1, // Update location when the user has moved 1 meter
           },
           async (newLocation) => {
             const { latitude, longitude } = newLocation.coords;
@@ -91,12 +91,6 @@ export default function MapScreen({ navigation }) {
           Latitude: {currentLocation.latitude}, Longitude:{" "}
           {currentLocation.longitude}
         </Text>
-      )}
-      {currentLocation && (
-        <Button
-          title="My Details"
-          onPress={() => navigation.navigate("My Current Location👇")}
-        />
       )}
     </View>
   );
