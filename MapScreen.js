@@ -7,33 +7,6 @@ import axios from "axios";
 export default function MapScreen({ navigation }) {
   const [currentLocation, setCurrentLocation] = useState(null);
   const backendUrl = "https://location-tracker-rtl.onrender.com";
-
-  // useEffect(() => {
-  //   const startWatchingLocation = async () => {
-  //     const { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status === "granted") {
-  //       const locationSubscriber = await Location.watchPositionAsync(
-  //         {
-  //           accuracy: Location.Accuracy.High,
-  //           timeInterval: 1000, // Update location every 1 second (adjust as needed)
-  //         },
-  //         async (newLocation) => {
-  //           const { latitude, longitude } = newLocation.coords;
-  //           setCurrentLocation({ latitude, longitude });
-  //           sendLocationData({ latitude, longitude }); // Send location to the backend
-  //         }
-  //       );
-
-  //       return () => {
-  //         if (locationSubscriber) {
-  //           locationSubscriber.remove();
-  //         }
-  //       };
-  //     }
-  //   };
-
-  //   startWatchingLocation();
-  // }, []);
   useEffect(() => {
     const startWatchingLocation = async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
