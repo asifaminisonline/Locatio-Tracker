@@ -100,7 +100,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  map: {},
+  map: {
+    flex: 1,
+  },
   locationText: {
     padding: 16,
     textAlign: "center",
