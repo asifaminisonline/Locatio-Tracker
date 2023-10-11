@@ -6,7 +6,9 @@ import axios from "axios";
 
 export default function MapScreen({ navigation }) {
   const [currentLocation, setCurrentLocation] = useState(null);
-  const backendUrl = "https://location-tracker-rtl.onrender.com";
+  const backendUrl = "https://location-tracker-rtl.onrender.com"; // Replace with your backend URL
+  const accuracy = Location.Accuracy.BestForNavigation;
+  const distanceInterval = 1; // Update location when the user has moved 1 meter
 
   useEffect(() => {
     const startWatchingLocation = async () => {
@@ -14,8 +16,8 @@ export default function MapScreen({ navigation }) {
       if (status === "granted") {
         const locationSubscriber = await Location.watchPositionAsync(
           {
-            accuracy: Location.Accuracy.BestForNavigation,
-            distanceInterval: 1, // Update location when the user has moved 1 meter
+            accuracy,
+            distanceInterval,
           },
           async (newLocation) => {
             const { latitude, longitude } = newLocation.coords;
@@ -38,7 +40,6 @@ export default function MapScreen({ navigation }) {
   const sendLocationData = async (location) => {
     try {
       console.log("Sending data to backend:", location);
-
       await axios.post(`${backendUrl}/locations`, location);
       console.log("Location data sent successfully!");
     } catch (error) {
@@ -63,15 +64,9 @@ export default function MapScreen({ navigation }) {
       </MapView>
       {currentLocation && (
         <Text style={styles.locationText}>
-          Latitude: {currentLocation.latitude}, Longitude:{" "}
+          Latitude: {currentLocation.latitude}, Longitude:
           {currentLocation.longitude}
         </Text>
-      )}
-      {currentLocation && (
-        <Button
-          title="My Details"
-          onPress={() => navigation.navigate("My Current Location👇")}
-        />
       )}
     </View>
   );
