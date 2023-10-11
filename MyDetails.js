@@ -1,14 +1,48 @@
-import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import axios from "axios";
 
-export default function MyDetails() {
+export default function MapScreen({ navigation }) {
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const backendUrl = "https://location-tracker-rtl.onrender.com"; // Replace with your actual backend URL
+
+  useEffect(() => {
+    const fetchLocationData = async () => {
+      try {
+        const response = await axios.get(`${backendUrl}/locations`);
+        // Assuming the response contains an array of location data
+        // You can modify this part to extract the desired location
+        const latestLocation = response.data[response.data.length - 1];
+        if (latestLocation) {
+          setCurrentLocation({
+            latitude: latestLocation.latitude,
+            longitude: latestLocation.longitude,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching location data:", error.message);
+      }
+    };
+
+    fetchLocationData();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Image source={require("./assets/dev.jpg")} style={styles.image} />
-      <Text style={styles.contactText}>Contact Details:</Text>
-      <Text style={styles.text}>Name: Asif </Text>
-      <Text style={styles.text}>Email: asifaminisonline@gmail.com</Text>
-      <Text style={styles.text}>Phone: +91 7780879289</Text>
+      <MapView
+        style={styles.map}
+        region={{
+          latitude: currentLocation ? currentLocation.latitude : 0,
+          longitude: currentLocation ? currentLocation.longitude : 0,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      >
+        {currentLocation && (
+          <Marker coordinate={currentLocation} title="User Location" />
+        )}
+      </MapView>
     </View>
   );
 }
@@ -16,24 +50,8 @@ export default function MyDetails() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "top",
   },
-  image: {
-    width: "100%",
-    height: undefined,
-    aspectRatio: 16 / 9,
-    marginBottom: 20,
-  },
-  contactText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 20,
-    paddingLeft: 20,
-  },
-  text: {
-    color: "green",
-    fontSize: 18,
-    paddingLeft: 20,
-    paddingBottom: 10,
+  map: {
+    flex: 1,
   },
 });

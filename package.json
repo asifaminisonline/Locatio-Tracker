@@ -16,7 +16,7 @@
     "axios": "^1.5.1",
     "eas-cli": "^5.4.0",
     "expo": "~49.0.13",
-    "expo-location": "^16.3.0",
+    "expo-location": "~16.1.0",
     "expo-status-bar": "~1.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -24,14 +24,15 @@
     "react-native-background-fetch": "^4.2.1",
     "react-native-background-timer": "^2.4.1",
     "react-native-geolocation-service": "^5.3.1",
-    "react-native-gesture-handler": "^2.13.1",
+    "react-native-gesture-handler": "~2.12.0",
     "react-native-maps": "^1.7.1",
-    "react-native-reanimated": "^3.5.4",
-    "react-native-screens": "^3.25.0",
+    "react-native-reanimated": "~3.3.0",
+    "react-native-screens": "~3.22.0",
     "react-native-web": "~0.19.6",
     "react-native-webrtc": "^111.0.3",
     "expo-updates": "~0.18.16"
   },
+  "proxy":"8000",
   "devDependencies": {
     "@babel/core": "^7.20.0"
   },

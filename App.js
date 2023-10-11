@@ -11,8 +11,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Map">
-        <Stack.Screen name="My Current Location👇" component={MapScreen} />
-        <Stack.Screen name="MyDetails" component={MyDetails} />
+        <Stack.Screen name="My Location👇" component={MapScreen} />
+        <Stack.Screen name="My Current Location👇" component={MyDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );
